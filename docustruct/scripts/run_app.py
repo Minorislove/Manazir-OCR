@@ -34,6 +34,11 @@ def main():
             app_file = "app.py"
 
     app_path = os.path.join(cur_dir, app_file)
+    # If the chosen app file doesn't exist (e.g., basic app removed),
+    # fallback to the professional app.
+    if not os.path.exists(app_path):
+        app_file = "app_professional.py"
+        app_path = os.path.join(cur_dir, app_file)
 
     cmd = [
         "streamlit",
