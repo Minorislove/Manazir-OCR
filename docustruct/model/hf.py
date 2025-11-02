@@ -87,6 +87,27 @@ def load_model():
     if settings.TORCH_ATTN:
         kwargs["attn_implementation"] = settings.TORCH_ATTN
 
+    # Check if this is a Qwen2VL model based on checkpoint name
+    # Skip Qwen3VL attempt if it's clearly a Qwen2VL model to avoid warnings
+    checkpoint_lower = settings.MODEL_CHECKPOINT.lower()
+    is_qwen2vl = "qwen2" in checkpoint_lower or checkpoint_lower.startswith("qwen/qwen2")
+    
+    if is_qwen2vl:
+        logger.info(f"Detected Qwen2VL model from checkpoint name, loading directly...")
+        try:
+            model = Qwen2VLForConditionalGeneration.from_pretrained(
+                settings.MODEL_CHECKPOINT, **kwargs
+            )
+            model = model.eval()
+            processor = AutoProcessor.from_pretrained(settings.MODEL_CHECKPOINT)
+            model.processor = processor
+            logger.info("Successfully loaded Qwen2VL model")
+            return model
+        except Exception as e:
+            raise OSError(
+                f"Failed to load Qwen2VL model from {settings.MODEL_CHECKPOINT}: {e}"
+            ) from e
+    
     # Try Qwen3VL first (for legacy/private models)
     try:
         logger.info(f"Attempting to load Qwen3VL model from {settings.MODEL_CHECKPOINT}...")
