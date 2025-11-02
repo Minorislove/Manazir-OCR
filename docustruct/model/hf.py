@@ -1,13 +1,17 @@
 from typing import List
+import logging
 
 import torch
 from qwen_vl_utils import process_vision_info
 from transformers import Qwen3VLForConditionalGeneration, Qwen3VLProcessor
+from transformers import Qwen2VLForConditionalGeneration, AutoProcessor
 
 from docustruct.model.schema import BatchInputItem, GenerationResult
 from docustruct.model.util import scale_to_fit
 from docustruct.prompts import PROMPT_MAPPING
 from docustruct.settings import settings
+
+logger = logging.getLogger(__name__)
 
 
 def generate_hf(
@@ -83,10 +87,34 @@ def load_model():
     if settings.TORCH_ATTN:
         kwargs["attn_implementation"] = settings.TORCH_ATTN
 
-    model = Qwen3VLForConditionalGeneration.from_pretrained(
-        settings.MODEL_CHECKPOINT, **kwargs
-    )
-    model = model.eval()
-    processor = Qwen3VLProcessor.from_pretrained(settings.MODEL_CHECKPOINT)
-    model.processor = processor
-    return model
+    # Try Qwen3VL first (for legacy/private models)
+    try:
+        logger.info(f"Attempting to load Qwen3VL model from {settings.MODEL_CHECKPOINT}...")
+        model = Qwen3VLForConditionalGeneration.from_pretrained(
+            settings.MODEL_CHECKPOINT, **kwargs
+        )
+        model = model.eval()
+        processor = Qwen3VLProcessor.from_pretrained(settings.MODEL_CHECKPOINT)
+        model.processor = processor
+        logger.info("Successfully loaded Qwen3VL model")
+        return model
+    except (OSError, ValueError, Exception) as e:
+        # Fallback to Qwen2VL if Qwen3VL fails
+        logger.warning(
+            f"Failed to load Qwen3VL model: {e}. "
+            f"Falling back to Qwen2VL architecture..."
+        )
+        try:
+            model = Qwen2VLForConditionalGeneration.from_pretrained(
+                settings.MODEL_CHECKPOINT, **kwargs
+            )
+            model = model.eval()
+            processor = AutoProcessor.from_pretrained(settings.MODEL_CHECKPOINT)
+            model.processor = processor
+            logger.info("Successfully loaded Qwen2VL model")
+            return model
+        except Exception as e2:
+            raise OSError(
+                f"Failed to load both Qwen3VL and Qwen2VL models from {settings.MODEL_CHECKPOINT}. "
+                f"Qwen3VL error: {e}. Qwen2VL error: {e2}"
+            ) from e2
