@@ -51,7 +51,14 @@ def main():
     ]
     if forwarded_args:
         cmd += ["--"] + forwarded_args
-    subprocess.run(cmd)
+    # Ensure the top-level project root is on PYTHONPATH so imports like
+    # `import docustruct` work when Streamlit changes the working directory.
+    repo_root = os.path.dirname(os.path.dirname(cur_dir))
+    env = os.environ.copy()
+    env["PYTHONPATH"] = (
+        f"{repo_root}:{env.get('PYTHONPATH', '')}" if env.get("PYTHONPATH") else repo_root
+    )
+    subprocess.run(cmd, env=env, cwd=repo_root)
 
 
 if __name__ == "__main__":
