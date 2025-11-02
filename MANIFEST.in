@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+include MODEL_LICENSE
+include USER_GUIDE.md
+include QUICKSTART.md
+include IMPLEMENTATION_SUMMARY.md
+include CHANGELOG.md
+recursive-include docustruct/scripts/templates *
+recursive-include assets *

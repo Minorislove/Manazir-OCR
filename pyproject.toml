@@ -1,0 +1,89 @@
+[project]
+name = "manazir-ocr"
+version = "0.2.0"
+description = "Multi-Model OCR Framework - Convert documents to markdown, HTML, or JSON with intelligent model selection."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "Hesham Haroon", email = "contact@heshamharoon.com"}
+]
+keywords = ["ocr", "pdf", "markdown", "layout", "arabic", "multilingual", "ai"]
+dependencies = [
+    "beautifulsoup4>=4.14.2",
+    "click>=8.0.0",
+    "filetype>=1.2.0",
+    "markdownify==1.1.0",
+    "openai>=2.2.0",
+    "pillow>=10.2.0",
+    "pydantic>=2.12.0",
+    "pydantic-settings>=2.11.0",
+    "pypdfium2>=4.30.0",
+    "python-dotenv>=1.1.1",
+    "qwen-vl-utils>=0.0.14",
+    "torch>=2.8.0",
+    "torchvision>=0.23.0",
+    "transformers>=4.57.1",
+    "streamlit>=1.50.0",
+    "accelerate>=1.11.0",
+]
+
+[project.optional-dependencies]
+# Core multilingual models
+multilingual = [
+    "qwen-vl-utils>=0.0.14",
+]
+
+# Lightweight models
+lightweight = [
+    "easyocr>=1.7.0",
+    "pytesseract>=0.3.10",
+    "paddleocr>=2.7.0",
+    "paddlepaddle>=2.6.0",
+]
+
+# Specialized models
+specialized = [
+    "surya-ocr>=0.4.0",
+]
+
+# Commercial APIs
+commercial = [
+    "openai>=2.2.0",
+    "requests>=2.31.0",
+]
+
+# All models
+all = [
+    "docustruct-ocr[multilingual,lightweight,specialized,commercial]",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+docustruct = "docustruct.scripts.cli:cli"  # backward compatibility
+qalam = "docustruct.scripts.cli:cli"  # backward compatibility
+manazir = "docustruct.scripts.cli:cli"
+docustruct_app = "docustruct.scripts.run_app:main"  # backward compatibility
+qalam_app = "docustruct.scripts.run_app:main"  # backward compatibility
+manazir_app = "docustruct.scripts.run_app:main"
+docustruct_app_pro = "docustruct.scripts.run_app_professional:main"  # backward compatibility
+qalam_app_pro = "docustruct.scripts.run_app_professional:main"  # backward compatibility
+manazir_app_pro = "docustruct.scripts.run_app_professional:main"
+docustruct_screenshot = "docustruct.scripts.screenshot_app:main"  # backward compatibility
+qalam_screenshot = "docustruct.scripts.screenshot_app:main"  # backward compatibility
+manazir_screenshot = "docustruct.scripts.screenshot_app:main"
+docustruct_vllm = "docustruct.scripts.vllm:main"  # backward compatibility
+qalam_vllm = "docustruct.scripts.vllm:main"  # backward compatibility
+manazir_vllm = "docustruct.scripts.vllm:main"
+
+[tool.setuptools.packages.find]
+include = ["docustruct*"]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+]
