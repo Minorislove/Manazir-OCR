@@ -9,6 +9,14 @@ from PIL import Image
 import io
 from pathlib import Path
 import tempfile
+import os
+import sys
+
+# Ensure project root is on sys.path so `import docustruct` works even when
+# Streamlit changes the working directory.
+_PKG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if _PKG_ROOT not in sys.path:
+    sys.path.insert(0, _PKG_ROOT)
 
 from docustruct.model import (
     create_model,
